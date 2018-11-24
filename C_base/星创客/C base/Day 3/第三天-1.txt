@@ -1,0 +1,292 @@
+复习
+	数组
+		定义：数据类型 数组名[大小] = {值};
+		访问：数组名[下标];  //下标从0到个数-1
+		切记：数组的访问或者操作不能越界
+		sizeof(数组名) ==>数组在内存中占的byte数
+		sizeof(数组名[0]) === sizeof(数据类型)
+		数组的大小 = sizeof(数组名) / sizeof(数组名[0]);
+		
+		二维数组
+			很多个一维数组构成
+			int array[2][5];
+			由2个一维数组构成，所以，也可以说array[0]和array[1]是这两个一维数组的数组名。
+	问题：
+		int arr[8] = {};
+			arr的类型是什么?  int [8];
+
+今天的内容
+	指针和字符串
+一、指针
+	变量类型 -- 存放地址 -- 只能存放操作系统分配的地址
+	定义 ： 
+		int num;  int *p = &num;
+		int arr[5];  int *p = &arr[3];    int (*q)[5] = &arr;
+		int * p = (int *)malloc(1000);
+		char * p = "hello";	
+		char **pp = &p;
+	运算 ：
+		p + 数; p - 数; p - 指针; 
+		*p = 值;  //写
+		num = *p; //读
+		p->成员
+		如果p指向了一个结构体变量；
+		p->name  (*p).name  p->score
+		p++  === p + 1;
+		说明 ：
+			p++相当于p向地址更大的方向移动一个单位。
+			这个单位的大小和p所指向空间存放的数据类型有关。
+			假设32位机，32位编译器
+			例：
+				int * p = &arr[0]; p = arr; p++;//p移动四字节，p就指向arr[1];
+				char * p = "farsight"; p++;//p移动1字节，p就指向'a';
+					"farsight"是字符串常量，存放在数据段
+					局部变量p是在栈段
+				int (*p)[2] = &arr; p++;//p移动2*sizeof(int)字节，p就指向arr数组后的地址
+				int arr[5] = {};
+				arr, &arr[0], &arr;
+					arr是数组名，也是数组首元素的地址，是一个地址常量。
+					&arr[0]是首元素地址，所以，arr和&arr[0]在数值上一样，在类型上也一样。
+					&arr是数组的地址，和前两个类型不同。数值上和前两个一样。
+		指针的大小
+			sizeof(指针) = 4;
+			sizeof(数组名) = 当前数组占用内存的大小（byte）
+			数组的元素个数 = sizeof(数组名) / sizeof(数组名[0])
+			例：	
+				int arr[4] = {};
+				int *p = arr;
+				int (*q)[4] = &arr;
+				sizeof(arr) = 16;
+				sizeof(p) = 4;
+				sizeof(q) = 4;
+	指针和数组
+		指针指向数组和某个元素，指针指向整个数组。
+		数组名作为函数参数，数组名退化为指针，子函数不知道数组的大小，需要增加一个参数来传递大小。
+		
+		int arr[15];
+		int * p = arr;
+		
+		arr[0]  p[5]
+		*p    *arr;
+		*(p + 3) === *(arr + 3); //p依然指向数组的第0个元素。(p+3)指向数组的第3个元素
+		p++; //p指向数组的第1个元素
+		arr++;//错的。因arr是常量，不能修改。
+		
+		指针数组：存放指针的数组
+		数组指针：指向数组的指针
+		例：
+			指针数组 --》 int * arr[4];  char * arrChar[5]; char ** arr2[5];
+			数组指针 --》 int (*p)[5];   char *(*q)[5] = &arrChar;
+			
+		const定义常量
+			const int A = 9;
+			#define SIZE 23
+			enum
+		
+		char * p;
+		const char * p  = "farsight"
+		char const * q  = "hello" //和上一句一样，但不常用
+		char * const h  = "world" //h不能指向其它地方
+		*前const ---> 字符串是常量，不能改
+		*后const ---> 指针里存放的地址不能改
+		
+		
+		例：
+			char chArray[] = "farsight";
+			char * p = chArray;
+			*p = 'a';//对的
+			p = &chArray[2]; //对的
+			
+			const char * q = chArray;
+			*q = 'a' ;//错的
+			q = &chArray[2]; //对的
+			
+			char * const h = chArray;
+			*h = 'a'; //对的
+			h = &chArray[2]; //错的
+			
+			----------------------------------
+			
+			char * chArray = "farsight";
+			char * p = chArray;
+			*p = 'a';//错的
+			p = &chArray[2]; //对的
+			
+			const char * q = chArray;
+			*q = 'a' ;//错的
+			q = &chArray[2]; //对的
+			
+			char * const h = chArray;
+			*h = 'a'; //错的
+			h = &chArray[2]; //错的			
+			
+			showString(char * str)
+			{
+				*str = 'a';//对的
+			}
+			
+			showString(const char * str2)
+			{
+				* str2 = 'a';//错的
+			}
+二、字符串
+	char name1[20] = {'z','h','a','n','g'};
+	char name2[20] = {"zhangSan"};
+	char name3[] = "zhangSan";
+	char name4[] = {'z','h','a','n','g'};
+	字符串结束标志：'\0'               //       \r,\n,\t,\\,\',\"
+	char * p = "zhangSan";
+	sizeof(name1) = 20 = sizeof(name2);  sizeof(name3) = 9;
+	sizeof(p) = 4;
+	strlen(p) = 8 = strlen(name2) = strlen(name3;
+	strlen(name1) = 5;
+	strlen(name4) = ? //数组里的字符串找不到结束标志
+	printf("%s", name??);//%s是从给定的地址开始找字符并且输出，当遇到第一个'\0'就结束
+	
+	函数
+		char * getStr()
+		{}
+		函数的返回值是地址。
+			函数调用的时候分配空间。函数调用结束释放空间。
+			函数的局部变量的地址不能返回。函数的栈空间地址不能返回。
+	1、下列代码的输出结果（）
+	void main( )
+	{
+		char *s1 = “0123456789”;
+		char s2[] = “0123456789”;
+		char *p1 = s2;
+		printf(“%d,%d,%d”,sizeof(s1),sizeof(s2),sizeof(p1)); 
+	}
+
+2、下述三个有什么区别？
+	char * const p;
+	char const * p；
+	const char *p; 
+3、Heap和Stack的区别？
+
+4、用变量a给出下面的定义 （特别重要）
+	a) 一个整型数（An integer） 
+	b) 一个指向整型数的指针（A pointer to an integer） 
+	c) 一个指向指针的指针，它指向的指针是指向一个整型数（A pointer to a pointer to an integer） 
+	d) 一个有10个整型数的数组（An array of 10 integers） 
+	e) 一个有10个指针的数组，该指针是指向一个整型数的（An array of 10 pointers to integers） 
+	f) 一个指向有10个整型数数组的指针（A pointer to an array of 10 integers）
+	g) 一个指向函数的指针，该函数有一个整型参数并返回一个整型数
+		int (*a)(int);
+5、下面程序的结果是多少？
+	p1=(unsigned char *)0x801000; 
+	p2=(unsigned long *)0x810000; 
+	请问p1+5 =  0x801005    ; 
+	p2+5 =  0x810014    ; 
+
+6、请写出下面代码在 32 位平台上的运行结果，并说明 sizeof 的性质：
+	#include <stdio.h>
+	#include <stdlib.h>
+	int main(void)
+	{
+        char a[30];
+        char *b = (char *)malloc(20 * sizeof(char));
+        printf("%d\n", sizeof(a));
+        printf("%d\n", sizeof(b));
+        printf("%d\n", sizeof(a[3]));
+        printf("%d\n", sizeof(b+3));
+        printf("%d\n", sizeof(*(b+4)));
+        return 0 ;
+	}
+
+5、下面函数的运行结果是什么？
+	main()
+	{	
+		int a[5]={1,2,3,4,5};
+		int *ptr=(int *)(&a+1);
+		printf("%d,%d",*(a+1),*(ptr-1));
+	}
+
+6、下列代码:
+	char * GetStr()
+	{
+		char *tmp;
+		tmp = "123";	
+		return tmp;
+	}
+	void main()
+	{
+		printf("%s", GetStr());
+	}
+	会输出123吗？123创建在堆上还是栈上呢？123的空间是什么时候释放的？
+ 
+7、 要求交换x和y的值，且通过正确调用返回交换之后的结果，则以下符合要求的函数是：
+	A: void guns(int *x,int *y){int *p; *p = *x; *x = *y;*y = *p;}
+	B: void funb(int  x,int  y){int t; t = x; x = y; y = t;}
+	C: void fund(int *x,int *y){int p; p = *x; *x = *y; *y = p;}
+	D: void func(int *x,int *y){*x= *y; *y = *x;}
+	E: void fune(int *x,int *y){int *p; p = x; x = y; y = p;}
+
+8、32位系统中，int (*a)[4][5]的大小是多少()
+ 	A、 4   b、14    C、20    D、80
+
+9、函数strcmp()是比较两个字符串s和t的大小，若是s<t函数返回负数，
+若s=t函数返回0，若s>t函数返回正数，根据以上信息补全程序：
+Int strcmp(char *s, char *t)
+{
+	while(*s && *t  &&_____(1)_______)
+	{
+		s++;
+		t++;
+	}
+	return ____(2)______;
+}
+
+10、已知数组char arrayA[i][j]，如果arrayA的地址为X，则
+	arrayA[m][n] 的地址是________________________________.
+
+11、在绝对地址0xXXXXXXXX上写入字符’a’的语句是___________。
+	
+12、下面程序的输出是_____，为什么？
+	char *ptr;
+	if ((ptr = (char *)malloc(0)) == NULL)
+	{
+		puts("Got a null pointer");
+	}
+	else
+	{
+		puts("Got a invalid pointer");
+	}
+	
+13、 下面的操作会输出什么？为什么
+void Func(char str[100])
+{
+	sizeof(str) = ___?___
+}
+答:____________________________________
+14、下面代码有什么问题
+void GetMemory(char *p)
+{
+	p = (char *) malloc(100);
+}
+void Test(void)
+{
+	char *str = NULL;
+	GetMemory(str);
+	strcpy(str,”hello world”);
+	printf(“%s”,str);
+}
+答:____________________________________
+
+作业：
+	1. 自己实现一个字符串比较的函数，任意给定两个字符串，如果前一个大，则返回>0的值，
+	如果后一个大，则，返回<0的值，如果相等，则，返回0
+	2. 任意一个整型数组，输入一个数，找出比这个数大的最小值，和比这个数小的最大值。
+	3. 给定一个整型二维数组，求它的鞍点
+		提示：鞍点是该行最大，并且该列最小的值。
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			
