@@ -1,5 +1,0 @@
-#include <stdio.h>
-
-#define size 9;
-
-extern char * my_strcat(char * dest, const char * src);

@@ -1,9 +1,0 @@
-CC = gcc
-CFLAGS = -Wall -g -O0
-
-my_strrchr: test.c my_strrchr.c
-	$(CC) $(CFLAGS) -o $@ $^
-
-.PHONY:clean
-clean:
-	rm -rf $(OBJS)

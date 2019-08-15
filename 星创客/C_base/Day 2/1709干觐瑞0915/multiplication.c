@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+// 使用一重循环实现九九乘法表
+
 int main()
 {
     int i, j;

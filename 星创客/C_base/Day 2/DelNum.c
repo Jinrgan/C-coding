@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+//定义一个整型数组，有五个元素，从键盘输入数据，按顺序保留最后输入的五个数字。
+
 int main()
 {
 	char s[] = "abc123de4fg56";

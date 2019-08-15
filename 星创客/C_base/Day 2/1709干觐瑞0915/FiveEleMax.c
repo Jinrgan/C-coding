@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+// 定义一个整型数组，有五个元素，从键盘输入数据，保留最大的五个数字. 
+
 #define MAXSIZE 5
 
 void main()
@@ -15,16 +17,16 @@ void main()
 		for(i=0; i < MAXSIZE; i++)
 		{
 			if(min >= ch[i])
-				{
-					min = ch[i];
-					MinPos = i;
-				}
-
+			{
+				min = ch[i];
+				MinPos = i;
+			}
 		}
 		
 		printf("%d\n", MinPos);
 		
 		scanf("%d", &buffer);
+		// 数组依此左移，覆盖掉最右
 		if(buffer > min)
 		{
 			for(i = MinPos; i >= 1; i--)
